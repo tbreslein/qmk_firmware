@@ -29,11 +29,20 @@ enum totem_layers {
 enum combos {
   QBV_LAYER
 };
-
 const uint16_t PROGMEM qbv_combo[] = {KC_Q, KC_B, KC_V, COMBO_END};
-
 combo_t key_combos[] = {
   [QBV_LAYER] = COMBO(qbv_combo, TG(_GAMING)),
+};
+
+// Shift + esc = ~
+const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_SHIFT, LT(_KEYPAD,KC_ESC), S(KC_GRV));
+
+// GUI + esc = `
+const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, LT(_KEYPAD,KC_ESC), KC_GRV);
+
+const key_override_t *key_overrides[] = {
+	&tilde_esc_override,
+	&grave_esc_override
 };
 
 // ┌─────────────────────────────────────────────────┐
@@ -91,7 +100,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                   KC_Q,     KC_W,     KC_F,     KC_P,     KC_B,       KC_J,     KC_L,     KC_U,     KC_Y,     KC_SCLN,
                   HM_A,     HM_R,     HM_S,     HM_T,     HM_G,       HM_M,     HM_N,     HM_E,     HM_I,     HM_O,
          KC_MINS, KC_Z,     KC_X,     KC_C,     HM_D,     KC_V,       KC_K,     HM_H,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_QUOT,
-           LT(_NAVIGATION,KC_TAB), LT(_KEYPAD,QK_GESC), KC_SPC,       KC_BSPC, LT(_SYMBOLS,KC_ENT), LT(_FUNCS,KC_DEL)
+           LT(_NAVIGATION,KC_TAB), LT(_KEYPAD,KC_ESC), KC_SPC,       KC_BSPC, LT(_SYMBOLS,KC_ENT), LT(_FUNCS,KC_DEL)
     ),
 
     /*
