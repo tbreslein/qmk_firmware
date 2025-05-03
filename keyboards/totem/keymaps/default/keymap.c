@@ -19,6 +19,7 @@
 
 enum totem_layers {
     _BASE,
+    _DVORAK,
     _KEYPAD,
     _SYMBOLS,
     _NAVIGATION,
@@ -26,12 +27,11 @@ enum totem_layers {
     _GAMING,
 };
 
-enum combos {
-  QTB_LAYER
-};
-const uint16_t PROGMEM qtb_combo[] = {KC_Q, KC_T, KC_B, COMBO_END};
+const uint16_t PROGMEM qbv_combo[] = {KC_Q, KC_B, KC_V, COMBO_END};
+const uint16_t PROGMEM jky_combo[] = {KC_J, KC_K, KC_Y, COMBO_END};
 combo_t key_combos[] = {
-  [QTB_LAYER] = COMBO(qtb_combo, TG(_GAMING)),
+  COMBO(qbv_combo, TG(_GAMING)),
+  COMBO(jky_combo, TG(_DVORAK)),
 };
 
 // Shift + esc = ~
@@ -92,6 +92,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                   HM_A,     HM_R,     HM_S,     HM_T,     HM_G,       HM_M,     HM_N,     HM_E,     HM_I,     HM_O,
         KC_MINS,  KC_Z,     KC_X,     KC_C,     HM_D,     KC_V,       KC_K,     HM_H,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_QUOT,
             LT(_NAVIGATION,KC_TAB), KC_SPC, LT(_KEYPAD,KC_ESC),       LT(_SYMBOLS,KC_ENT), KC_BSPC, LT(_FUNCS,KC_DEL)
+    ),
+
+    /*
+      ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+
+      ┌─────────────────────────────────────────────────┐
+      │ dvorak                                          │      ╭╮╭╮╭╮╭╮
+      └─────────────────────────────────────────────────┘      │╰╯╰╯╰╯│
+                ┌─────────┬─────────┬─────────┬─────────┬──────╨──┐┌──╨──────┬─────────┬─────────┬─────────┬─────────┐
+        ╌┄┈┈───═╡    '    │    ,    │    .    │    P    │    Y    ││    F    │    G    │    C    │    R    │    L    │
+                ├─────────┼─────────┼─────────┼─────────┼─────────┤├─────────┼─────────┼─────────┼─────────┼─────────┤
+                │    A    │    O    │    E    │    U    │    I    ││    D    │    H    │    T    │    N    │    S    │
+      ┌─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤├─────────┼─────────┼─────────┼─────────┼─────────┼─────────┐
+      │    /    │    ;    │    Q    │    J    │    K    │    X    ││    B    │    M    │    W    │    V    │    Z    │    -    │
+      └─────────┴─────────┴─────────┼─────────┼─────────┼─────────┤├─────────┼─────────┼─────────┼─────────┴─────────┴─────────┘
+                                    │   TAB   │  SPACE  │   ESC   ││  ENTER  │  BSPC   │   DEL   │
+                                    └─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┘ */
+
+    [_DVORAK] = LAYOUT(
+        // ╷         ╷         ╷         ╷         ╷         ╷    ╷╷    ╷         ╷         ╷         ╷         ╷         ╷
+               KC_QUOT,  KC_COMM,   KC_DOT,     KC_P,     KC_Y,      KC_F,     KC_G,     KC_C,     KC_R,     KC_L,
+   LGUI_T(KC_A),LALT_T(KC_O),LSFT_T(KC_E),LCTL_T(KC_U),HYPR_T(KC_I),HYPR_T(KC_D),RCTL_T(KC_H),RSFT_T(KC_T),LALT_T(KC_N),RGUI_T(KC_S),
+        KC_SLSH,KC_SCLN,    KC_Q,     KC_J,MEH_T(KC_K),   KC_X,      KC_B,MEH_T(KC_M),   KC_W,     KC_V,     KC_Z,  KC_MINS,
+            LT(_NAVIGATION,KC_TAB), KC_SPC, LT(_KEYPAD,KC_ESC),      LT(_SYMBOLS,KC_ENT), KC_BSPC, LT(_FUNCS,KC_DEL)
     ),
 
     /*
