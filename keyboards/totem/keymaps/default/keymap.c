@@ -2,15 +2,18 @@
 
 enum totem_layers {
     _BASE,
+    _COLEMAK,
     _SYM,
     _NUMS,
     _NAV,
     _GAMING,
 };
 
-const uint16_t PROGMEM qbv_combo[] = {KC_Q, KC_B, KC_V, COMBO_END};
+const uint16_t PROGMEM gaming_combo[] = {KC_Q, KC_B, KC_V, COMBO_END};
+const uint16_t PROGMEM colemak_combo[] = {KC_Y, KC_U, KC_M, COMBO_END};
 combo_t key_combos[] = {
-  COMBO(qbv_combo, TG(_GAMING)),
+  COMBO(gaming_combo, TG(_GAMING)),
+  COMBO(colemak_combo, TG(_COLEMAK)),
 };
 
 #define HM_A LGUI_T(KC_A)
@@ -44,6 +47,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,       KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,
                   HM_A,     HM_S,     HM_D,     HM_F,     KC_G,       KC_H,     HM_J,     HM_K,     HM_L,     HM_SCLN,
         KC_LBRC,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,       KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RBRC,
+                    LT(_NAV,KC_QUOT), KC_SPC, LT(_NUMS,KC_ESC),       LT(_SYM,KC_ENT), KC_BSPC, KC_MINS
+    ),
+
+    /* _COLEMAK  ┌─────────┬─────────┬─────────┬─────────┬─────────┐┌─────────┬─────────┬─────────┬─────────┬─────────┐
+                 │    Q    │    W    │    F    │    P    │    B    ││    J    │    L    │    U    │    Y    │    ;    │
+                 ├─────────┼─────────┼─────────┼─────────┼─────────┤├─────────┼─────────┼─────────┼─────────┼─────────┤
+                 │ A/LGUI  │ R/LALT  │ S/LSFT  │ T/LCTL  │    G    ││    M    │ N/RCTL  │ E/RSFT  │ I/LALT  │ O/RGUI  │
+       ┌─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤├─────────┼─────────┼─────────┼─────────┼─────────┼─────────┐
+       │    [    │    Z    │    X    │    C    │    D    │    V    ││    K    │    H    │    ,    │    .    │    /    │    ]    │
+       └─────────┴─────────┴─────────┼─────────┼─────────┼─────────┤├─────────┼─────────┼─────────┼─────────┴─────────┴─────────┘
+                                     │    '    │  SPACE  │   ESC   ││  ENTER  │  BSPC   │    -    │
+                                     └─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┘*/
+    [_COLEMAK] = LAYOUT(
+        // ╷         ╷         ╷         ╷         ╷         ╷     ╷╷    ╷         ╷         ╷         ╷         ╷         ╷
+                  KC_Q,     KC_W,     KC_F,     KC_P,     KC_B,       KC_J,     KC_L,     KC_U,     KC_Y,     KC_SCLN,
+         LGUI_T(KC_A),LALT_T(KC_R),LSFT_T(KC_S),LCTL_T(KC_T),KC_G,    KC_M,RCTL_T(KC_N),RSFT_T(KC_E),LALT_T(KC_I),RGUI_T(KC_O),
+        KC_LBRC,  KC_Z,     KC_X,     KC_C,     KC_D,     KC_V,       KC_K,     KC_H,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RBRC,
                     LT(_NAV,KC_QUOT), KC_SPC, LT(_NUMS,KC_ESC),       LT(_SYM,KC_ENT), KC_BSPC, KC_MINS
     ),
 
