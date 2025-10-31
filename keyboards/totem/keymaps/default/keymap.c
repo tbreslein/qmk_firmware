@@ -2,7 +2,7 @@
 
 enum totem_layers {
     _BASE,
-    _DVORAK,
+    _COLEMAK,
     _SYM,
     _NUMS,
     _NAV,
