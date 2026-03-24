@@ -41,7 +41,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM 175
 #define PERMISSIVE_HOLD
 #define QUICK_TAP_TERM 150
-#define COMBO_TERM 40
+#define COMBO_TERM 30
+#define COMBO_SHOULD_TRIGGER
 // #define ONESHOT_TIMEOUT 1000
 // #define ONESHOT_TAP_TOGGLE 2
 

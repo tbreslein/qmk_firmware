@@ -67,7 +67,7 @@ const uint16_t PROGMEM combo_kl[] = {KC_K, KC_L, COMBO_END};
 
 combo_t key_combos[] = {
     [QTB_GAME] = COMBO(combo_qtb, DF(GAME)),
-    [YPN_BASE] = COMBO(combo_ypn, PDF(BASE)),
+    [YPN_BASE] = COMBO(combo_ypn, DF(BASE)),
 
     [WE_LBRK] = COMBO(combo_we, KC_LBRC),
     [ER_RBRK] = COMBO(combo_er, KC_RBRC),
@@ -82,7 +82,13 @@ combo_t key_combos[] = {
     [KL_ENT] = COMBO(combo_kl, KC_ENT),
 };
 
+
+
 bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
+    uint8_t default_layer = get_highest_layer(default_layer_state);
+    uint8_t on_base_layer = default_layer == BASE;
+    uint8_t on_game_layer = default_layer == GAME;
+
     switch (combo_index) {
         // Disable left-hand combos on layer `GAME`
         case WE_LBRK:
@@ -91,17 +97,20 @@ bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode
         case DF_RPRN:
         case XC_LCBR:
         case CV_RCBR:
-            return !layer_state_is(GAME);
-
         // No sense in swapping to game, when you already are on game
         case QTB_GAME:
-            return !layer_state_is(GAME);
+            if (on_game_layer) {
+                return false;
+            }
+            break;
 
         // No sense in swapping to base, when you already are on base
         case YPN_BASE:
-            return !layer_state_is(BASE);
+            if (on_base_layer) {
+                return false;
+            }
+            break;
     }
-
     return true;
 }
 
@@ -143,9 +152,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [GAME] = LAYOUT_split_3x5_2(
         KC_Q, KC_W, KC_E, KC_R, KC_T, /**/ KC_Y, KC_U, KC_I,    KC_O,   KC_P,
-        KC_A, KC_S, KC_D, KC_F, KC_G, /**/ KC_H, KC_J, KC_K,    KC_L,   KC_SCLN,
-        KC_Z, KC_X, KC_C, KC_V, KC_B, /**/ KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH,
-                      KC_P0, KC_BSPC, /**/ KC_SPC, KC_P1
+        KC_A, KC_S, KC_D, KC_F, KC_G, /**/ KC_H, KC_J, KC_K,    KC_L,   LGUI_T(KC_QUOT),
+        KC_Z, KC_X, KC_C, KC_V, KC_B, /**/ KC_N, KC_M, KC_COMM, KC_DOT, LALT_T(KC_SLSH),
+                     KC_LSFT, KC_SPC, /**/ LCTL_T(KC_BSPC), MO_SYM
     ),
 
     [NAV] = LAYOUT_split_3x5_2(
