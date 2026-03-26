@@ -82,8 +82,6 @@ combo_t key_combos[] = {
     [KL_ENT] = COMBO(combo_kl, KC_ENT),
 };
 
-
-
 bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
     uint8_t default_layer = get_highest_layer(default_layer_state);
     uint8_t on_base_layer = default_layer == BASE;
