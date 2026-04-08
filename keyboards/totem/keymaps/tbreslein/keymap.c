@@ -92,9 +92,7 @@ bool get_combo_must_tap(uint16_t, combo_t *) {
 }
 #endif
 
-#ifdef COMBO_SHOULD_TRIGGER
 bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
-    // uint8_t current_highest_layer = get_highest_layer(default_layer_state);
     switch (combo_index) {
         // don't fire these on the game layer
         case QTB_GAME:
@@ -106,11 +104,10 @@ bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode
         case DF_HASH:
         case WE_CIRC:
         case ER_DLR:
-            return !layer_state_is(GAME);
+            return !layer_state_cmp(default_layer_state, GAME);
     }
     return true;
 }
-#endif
 
 // const key_override_t ko_shift_comm_scln = ko_make_basic(MOD_MASK_SHIFT, KC_COMM, KC_MINS);
 // const key_override_t ko_shift_dot_colon = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, KC_UNDS);
