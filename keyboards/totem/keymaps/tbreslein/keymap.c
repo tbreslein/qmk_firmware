@@ -36,6 +36,16 @@ typedef enum {
     KL_ENT,
     MCOMM_LBRC,
     COMMDOT_RBRC,
+    NM_LCBR,
+    DOTSLSH_RCBR,
+    ZX_EXLM,
+    XC_LPRN,
+    CV_RPRN,
+    AS_AT,
+    SD_PERC,
+    DF_HASH,
+    WE_CIRC,
+    ER_DLR,
 } _COMBOS;
 const uint16_t PROGMEM combo_qtb[] = {KC_Q, KC_T, KC_B, COMBO_END};
 const uint16_t PROGMEM combo_ypn[] = {KC_Y, KC_P, KC_N, COMBO_END};
@@ -45,6 +55,16 @@ const uint16_t PROGMEM combo_jk[] = {HM_J, HM_K, COMBO_END};
 const uint16_t PROGMEM combo_kl[] = {HM_K, HM_L, COMBO_END};
 const uint16_t PROGMEM combo_mcomm[] = {KC_M, KC_COMM, COMBO_END};
 const uint16_t PROGMEM combo_commdot[] = {KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_nm[] = {KC_N, KC_M, COMBO_END};
+const uint16_t PROGMEM combo_dotslsh[] = {KC_DOT, KC_SLSH, COMBO_END};
+const uint16_t PROGMEM combo_zx[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM combo_xc[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM combo_cv[] = {KC_C, KC_V, COMBO_END};
+const uint16_t PROGMEM combo_as[] = {HM_A, HM_S, COMBO_END};
+const uint16_t PROGMEM combo_sd[] = {HM_S, HM_D, COMBO_END};
+const uint16_t PROGMEM combo_df[] = {HM_D, HM_F, COMBO_END};
+const uint16_t PROGMEM combo_we[] = {KC_W, KC_E, COMBO_END};
+const uint16_t PROGMEM combo_er[] = {KC_E, KC_R, COMBO_END};
 combo_t key_combos[] = {
     [QTB_GAME] = COMBO(combo_qtb, DF(GAME)),
     [YPN_BASE] = COMBO(combo_ypn, DF(BASE)),
@@ -54,7 +74,43 @@ combo_t key_combos[] = {
     [KL_ENT] = COMBO(combo_kl, KC_ENT),
     [MCOMM_LBRC] = COMBO(combo_mcomm, KC_LBRC),
     [COMMDOT_RBRC] = COMBO(combo_commdot, KC_RBRC),
+    [NM_LCBR] = COMBO(combo_nm, KC_LCBR),
+    [DOTSLSH_RCBR] = COMBO(combo_dotslsh, KC_RCBR),
+    [ZX_EXLM] = COMBO(combo_zx, KC_EXLM),
+    [XC_LPRN] = COMBO(combo_xc, KC_LPRN),
+    [CV_RPRN] = COMBO(combo_cv, KC_RPRN),
+    [AS_AT] = COMBO(combo_as, KC_AT),
+    [SD_PERC] = COMBO(combo_sd, KC_PERC),
+    [DF_HASH] = COMBO(combo_df, KC_HASH),
+    [WE_CIRC] = COMBO(combo_we, KC_CIRC),
+    [ER_DLR] = COMBO(combo_er, KC_DLR),
 };
+
+#ifdef COMBO_MUST_TAP_PER_COMBO
+bool get_combo_must_tap(uint16_t, combo_t *) {
+    return true;
+}
+#endif
+
+#ifdef COMBO_SHOULD_TRIGGER
+bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
+    // uint8_t current_highest_layer = get_highest_layer(default_layer_state);
+    switch (combo_index) {
+        // don't fire these on the game layer
+        case QTB_GAME:
+        case ZX_EXLM:
+        case XC_LPRN:
+        case CV_RPRN:
+        case AS_AT:
+        case SD_PERC:
+        case DF_HASH:
+        case WE_CIRC:
+        case ER_DLR:
+            return !layer_state_is(GAME);
+    }
+    return true;
+}
+#endif
 
 // const key_override_t ko_shift_comm_scln = ko_make_basic(MOD_MASK_SHIFT, KC_COMM, KC_MINS);
 // const key_override_t ko_shift_dot_colon = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, KC_UNDS);
@@ -83,34 +139,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 };
 
 // TODO:
-
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
                KC_Q, KC_W, KC_E, KC_R, KC_T, /**/ KC_Y, KC_U, KC_I,    KC_O,   KC_P,
                HM_A, HM_S, HM_D, HM_F, KC_G, /**/ KC_H, HM_J, HM_K,    HM_L,   HM_SCLN,
       KC_MINS, KC_Z, KC_X, KC_C, KC_V, KC_B, /**/ KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_QUOT,
-LT(NAV, S(KC_TAB)), LT(NUM, KC_ESC), KC_SPC, /**/ KC_BSPC, LT(SYM, KC_ENT), LT(FN, KC_TAB)
+                   MO(NAV), MO(NUM), KC_SPC, /**/ KC_BSPC, MO(SYM), MO(FN)
     ),
 
     [GAME] = LAYOUT(
                  KC_Q, KC_W, KC_E, KC_R, KC_T, /**/ KC_Y, KC_U, KC_I,    KC_O,   KC_P,
                  KC_A, KC_S, KC_D, KC_F, KC_G, /**/ KC_H, HM_J, HM_K,    HM_L,   HM_SCLN,
-LALT_T(KC_MINS), KC_Z, KC_X, KC_C, KC_V, KC_B, /**/ KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_QUOT,
-             LT(NUM, KC_ESC), KC_LSFT, KC_SPC, /**/ KC_BSPC, MO(SYM), MO(FN)
+LSFT_T(KC_MINS), KC_Z, KC_X, KC_C, KC_V, KC_B, /**/ KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_QUOT,
+       LT(FN, KC_ESC), LALT_T(KC_TAB), KC_SPC, /**/ KC_BSPC, MO(SYM), MO(FN)
     ),
 
     [SYM] = LAYOUT(
-         _______, KC_AT,   KC_LPRN, KC_RPRN, KC_BSLS, /**/ _______, KC_LPRN, KC_RPRN, _______, _______,
-         KC_ASTR, KC_MINS, KC_PLUS, KC_EQL,  KC_AMPR, /**/ _______, KC_RCTL, KC_RSFT, KC_LALT, KC_RGUI,
-KC_HASH, KC_CIRC, KC_PERC, KC_EXLM, KC_DLR,  KC_PIPE, /**/ _______, _______, KC_LT,   KC_GT,   KC_QUES, _______,
+         _______, _______, KC_PIPE, KC_AMPR, _______, /**/ _______, KC_CAPS, CW_TOGG, _______, _______,
+         KC_ASTR, KC_MINS, KC_PLUS, KC_EQL,  _______, /**/ _______, KC_RCTL, KC_RSFT, KC_LALT, KC_RGUI,
+_______, KC_QUES, KC_LT,   KC_GT,   KC_BSLS, _______, /**/ _______, _______, _______, _______, _______, _______,
                            _______, KC_GRV,  KC_TILD, /**/ _______, _______, _______
     ),
 
     [NUM] = LAYOUT(
          _______,  _______, KC_COMM, KC_DOT,  _______, /**/ KC_ASTR, KC_7, KC_8, KC_9, KC_PERC,
-         KC_LGUI,  KC_LALT, KC_LSFT, KC_LCTL, _______, /**/ KC_PLUS, KC_4, KC_5, KC_6, KC_EQL,
-_______, _______,  _______, _______, _______, _______, /**/ KC_MINS, KC_1, KC_2, KC_3, KC_SLSH, KC_CIRC,
+         KC_LGUI,  KC_LALT, KC_LSFT, KC_LCTL, _______, /**/ KC_PLUS, KC_4, KC_5, KC_6, KC_COLN,
+_______, _______,  _______, _______, _______, _______, /**/ KC_MINS, KC_1, KC_2, KC_3, KC_SLSH, KC_EQL,
                             _______, _______, _______, /**/ KC_DEL, KC_0, _______
     ),
 
@@ -125,7 +180,7 @@ _______, _______, _______, _______, _______, _______, /**/ MS_WHLL, MS_WHLD, MS_
         KC_F1, KC_F2,  KC_F3,  KC_F4,  KC_F13, /**/ EMAIL,   KC_MPRV, KC_MPLY, KC_MNXT, KC_BRIU,
         KC_F5, KC_F6,  KC_F7,  KC_F8,  KC_F14, /**/ _______, KC_RCTL, KC_RSFT, KC_LALT, KC_RGUI,
 KC_F16, KC_F9, KC_F10, KC_F11, KC_F12, KC_F15, /**/ _______, KC_VOLD, KC_MUTE, KC_VOLU, KC_BRID, G(KC_TAB),
-                    _______, KC_CAPS, CW_TOGG, /**/ _______, _______, _______
+                    _______, _______, _______, /**/ _______, _______, _______
     ),
 };
 // clang-format on
