@@ -32,7 +32,7 @@ for more options.
 #define TAPPING_TERM 175
 #define PERMISSIVE_HOLD
 #define QUICK_TAP_TERM 150
-#define COMBO_TERM 35
+#define COMBO_TERM 30
 #define COMBO_MUST_TAP_PER_COMBO
 // #define COMBO_HOLD_TERM 35
 #define COMBO_SHOULD_TRIGGER
